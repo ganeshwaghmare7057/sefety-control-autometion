@@ -24,26 +24,17 @@ int main(void)
 	float temp = 0;
 	
 	printf("OCFreaks.com LPC214x LM35 Interfacing Tutorial\n");
-	
 	AD0CR = AD0CR_setup | SEL_AD06; //Setup ADC block
-	
 	AD0CR |= START_NOW; //Start new Conversion
 	while( (AD0DR6 & ADC_DONE) == 0 );
 	//Ignore the first ADC reading.
-	
 	while(1)
 	{
 		AD0CR |= START_NOW; //Start new Conversion
 		while( (AD0DR6 & ADC_DONE) == 0 );
-		
 		result = (AD0DR6>>6) & 0x3FF; //get the 10bit ADC result
-		
 		temp = ((float)result * VREF * 100)/1024; //As per the Equation given in the tutorial
-
 		printf("Temp = %0.1f Deg. Celsius\n" , temp);
-		
 		delayMS(1000); //1 Update per second
 	}
-	
-	//return 0; //This won't execute normally
 }
